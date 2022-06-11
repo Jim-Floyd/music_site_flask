@@ -17,7 +17,7 @@ class Users(db.Model):
     username = db.Column(db.String(), unique=True, nullable=False)
     email = db.Column(db.String())
     password = db.Column(db.String())
-    admin = db.Column(db.Boolean())
+    admin = db.Column(db.Boolean(), default=False)
 
 
 class Singer(db.Model):
@@ -35,16 +35,20 @@ class Musics(db.Model):
     music_name = db.Column(db.String())
     music_img = db.Column(db.String())
     music_owner = db.Column(db.Integer, db.ForeignKey('singer.id'))
-    music_genere = db.relationship("Genere", backref="musics")
-    music_category = db.relationship("Category", backref="musics_catygory")
-    music_album = db.relationship("Album", backref="musics_albums")
+    # db.relationship("Genere", backref="musics")
+    music_genre = db.Column(db.Integer, db.ForeignKey('genre.id'))
+    music_category = db.Column(db.Integer, db.ForeignKey('category.id'))
+    # db.relationship("Category", backref="musics_catygory")
+    music_album = db.Column(db.Integer, db.ForeignKey('album.id'))
+    # db.relationship("Album", backref="musics_albums")
 
 
-class Genere(db.Model):
-    __tablename__ = "gengre"
+class Genre(db.Model):
+    __tablename__ = "genre"
     id = db.Column(db.Integer, primary_key=True)
-    gener_music = db.Column(db.Integer, db.ForeignKey('music.id'))
-    genere_type = db.Column(db.String())
+    genre_music = db.relationship("Musics", backref="genre")
+    # db.Column(db.Integer, db.ForeignKey('music.id'))
+    genre_type = db.Column(db.String())
 
 
 class Album(db.Model):
@@ -52,11 +56,13 @@ class Album(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     album_name = db.Column(db.String())
     album_owner = db.Column(db.Integer, db.ForeignKey("singer.id"))
-    album_music = db.Column(db.Integer, db.ForeignKey('music.id'))
+    album_music = db.relationship("Musics", backref="album")
+    # db.Column(db.Integer, db.ForeignKey('music.id'))
 
 
 class Category(db.Model):
     __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     category_type = db.Column(db.String())
-    catygory_music = db.Column(db.Integer, db.ForeignKey("music.id"))
+    category_music = db.relationship("Musics", backref="category")
+    # db.Column(db.Integer, db.ForeignKey("music.id"))

@@ -77,17 +77,17 @@ reg_confirm_password.addEventListener("input", () => {
 sumbitBtn.addEventListener("click", sendRequest)
 
 function sendRequest() {
-    fetch('/post', {
+    fetch('/register', {
         method: 'POST',
-        headers: 'Content-Type, application/json',
         body: JSON.stringify(
             {
-                name: name.value,
-                email: reg_email.value,
-                password: reg_password.value,
-                reg_confirm_password: reg_confirm_password
-            }
-        )
+                'name': name.value,
+                'email': reg_email.value,
+                'password': reg_password.value,
+                'reg_confirm_password': reg_confirm_password
+            }),
+        headers: {'Content-Type': 'application/json'}
+
     })
         .then(res => res.json())
         .then(res => console.log(res))
@@ -106,3 +106,76 @@ ps_value.addEventListener('click', () => {
         ps_input.type = "password"
     }
 })
+
+const singerBtn = document.querySelector('.singer-item'),
+    categoryBtn = document.querySelector('.category-item'),
+    genreBtn = document.querySelector('.genre-item'),
+    singerList = document.querySelector('.singer-list'),
+    categoryList = document.querySelector('.category-list'),
+    genreList = document.querySelector('.genre-list'),
+    addSingerBtn = document.querySelector('.category-add-singer'),
+    addCategoryBtn = document.querySelector('.category-add-category'),
+    addGenreBtn = document.querySelector('.category-add-genre');
+
+singerBtn.addEventListener('click', ()=>{
+    singerList.style.display = 'block'
+    categoryList.style.display = 'none'
+    genreList.style.display = 'none'
+    fetch('/singer-list', {
+        method: 'GET'
+    })
+    .then(res => res.json())
+    .then(function (jsonResponse) {
+        if (jsonResponse['found'] !== "None") {
+            if (jsonResponse['found']) {
+                msgTrue.style.cssText = 'display:block; color:red'
+                msgFalse.style.cssText = 'display:none;'
+            } else if (!jsonResponse['found']) {
+                msgTrue.style.display = 'none'
+                msgFalse.style.cssText = 'display:block; color:green'
+            }
+        } else {
+            msgTrue.style.display = 'none'
+            msgFalse.style.display = 'none'
+        }
+    })
+})
+categoryBtn.addEventListener('click', ()=>{
+    singerList.style.display = 'none'
+    categoryList.style.display = 'block'
+    genreList.style.display = 'none'
+})
+genreBtn.addEventListener('click', ()=>{
+    singerList.style.display = 'none'
+    categoryList.style.display = 'none'
+    genreList.style.display = 'block'
+})
+
+
+const addSingerInfo = document.querySelector('.add-singer-info'),
+    addCategoryInfo = document.querySelector('.add-category-info'),
+    addGenreInfo = document.querySelector('.add-genre-info')
+
+addSingerBtn.addEventListener('click', ()=>{
+        addSingerInfo.style.display = 'block'
+        addCategoryInfo.style.display = 'none'
+        addGenreInfo.style.display = 'none'
+    })
+
+// addSingerBtn.addEventListener('click', ()=>{
+//     fetch('/add-singer', {
+//         method:'GET',
+//         body: JSON.stringify(
+//             {
+//                 'name': name.value,
+//                 'img': reg_email.value,
+//             }),
+//         headers: {'Content-Type': 'application/json'}
+//     })
+//     .then(res => res.json())
+//     .then(function (jsonResponse) {
+//         addSingerInfo.style.display = 'block'
+//         addCategoryInfo.style.display = 'none'
+//         addGenreInfo.style.display = 'none'
+//     })
+// })

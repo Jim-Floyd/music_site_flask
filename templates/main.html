@@ -40,10 +40,15 @@
 
         <nav class="nav">
             <ul class="nav-list">
-                <li>favaurte</li>
-                <i class="fa fa-star"></i>
-                <li><a href="#" class="login">Login</a></li>
-                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                {% if current_user %}
+                    <li>favourite</li>
+                    <i class="fa fa-star"></i>
+                    <li><a href="#" class="login">Logout</a></li>
+                    <i class="fa-solid fa-arrow-left-to-bracket"></i>
+                {% else %}
+                    <li><a href="#" class="login">Login</a></li>
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                {% endif %}
             </ul>
         </nav>
     </header>
@@ -53,18 +58,18 @@
 <section class="register register-none">
     <div class="resiger_block block_1">
 
-        <input type="text" placeholder="Enter your username" id="reg_name">
+        <input type="text" placeholder="Enter your username" id="reg_name" name="username">
         <p class="name-info"></p>
-        <input type="email" placeholder="Enter your email" id="reg_email">
+        <input type="email" placeholder="Enter your email" id="reg_email" name="email">
         <p class="email-info"></p>
-        <input class="reg_ps" type="password" placeholder="Enter your password" id="reg_password">
+        <input class="reg_ps" type="password" placeholder="Enter your password" id="reg_password" name="password">
         <p class="msg"></p>
 
-        <input type="password" placeholder="Confirm your password" id="reg_confirm_password">
+        <input type="password" placeholder="Confirm your password" id="reg_confirm_password" name="re-password">
         <i class="fa-solid fa-eye"></i>
         <p class="msg1"></p>
 
-        <button class="register-link1" id="submit"><a class="submit" href="#">Register</a></button>
+        <button class="register-link1" id="submit"><a class="submit" href="{{ url_for('register') }}">Register</a></button>
         <div class="lg_link">
             <p class="question-link">Yes accaunt ?</p>
             <a class="login-link" href="#">Login</a>
@@ -73,9 +78,9 @@
 
     <div class="resiger_block block_2 block_hide">
         <i class="mp3_icon fa-solid fa-music"></i>
-        <input type="text" placeholder="Enter your username">
-        <input class="br_bottom" type="password" placeholder="Enter your password">
-        <a class="register-link1" href="#">Login</a>
+        <input type="text" placeholder="Enter your username" name="username">
+        <input class="br_bottom" type="password" placeholder="Enter your password" name="password">
+        <a class="register-link1" href="{{ url_for('login') }}">Login</a>
         <div class="lg_link">
             <p class="question-link">Haven't got accaunt ?</p>
             <a class="register-link" href="#">Register</a>
