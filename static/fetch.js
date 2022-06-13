@@ -113,7 +113,10 @@ const singerBtn = document.querySelector('.singer-item'),
     genreList = document.querySelector('.genre-list'),
     addSingerBtn = document.querySelector('.category-add-singer'),
     addCategoryBtn = document.querySelector('.category-add-category'),
-    addGenreBtn = document.querySelector('.category-add-genre');
+    addGenreBtn = document.querySelector('.category-add-genre'),
+    singersList = document.querySelector('.singers-list'),
+    categoriesList = document.querySelector('.categories-list'),
+    genresList = document.querySelector('.genres-list')
 let type = 'ss'
 
 
@@ -122,6 +125,9 @@ singerBtn.addEventListener('click', () => {
     categoryList.style.display = 'none'
     genreList.style.display = 'none'
     type = 'artist'
+    if (singersList.innerHTML === '') {
+        getList(type)
+    }
     changeType(type)
 
     // fetch('/singer-list', {
@@ -148,6 +154,9 @@ categoryBtn.addEventListener('click', () => {
     categoryList.style.display = 'block'
     genreList.style.display = 'none'
     type = 'category'
+    if (categoriesList.innerHTML === '') {
+        getList(type)
+    }
     changeType(type)
 
 })
@@ -156,17 +165,19 @@ genreBtn.addEventListener('click', () => {
     categoryList.style.display = 'none'
     genreList.style.display = 'block'
     type = 'genre'
+    if (genresList.innerHTML === '') {
+        getList(type)
+    }
     changeType(type)
 })
+
 
 function changeType(type) {
 
     const input1 = document.getElementById('input'),
         imgArtist = document.getElementById('img-artist'),
-        addBtn = document.getElementById('add_btn'),
-        singersList = document.querySelector('.singers-list'),
-        categoriesList = document.querySelector('.categories-list'),
-        genresList = document.querySelector('.genres-list')
+        addBtn = document.getElementById('add_btn')
+
 
     input1.placeholder = `Enter ${type} name`
     type !== 'artist' ? imgArtist.style.display = 'none' : imgArtist.style.display = 'block'
@@ -188,31 +199,36 @@ function changeType(type) {
             .then(res => res.json())
             .then(function (jsonResponse) {
                 console.log(jsonResponse['artist_list'])
-                input1.value=''
-                if(type==='artist'){
-                jsonResponse['artist_list'].forEach((element, index) => {
-                    // const commented_owner_name = document.createElement("div"),
-                    //     comment_owner_img = document.createElement("div"),
-                    //     comment_owner_text = document.createElement("div");
-                    console.log(element['commented_ago'])
-                    singersList.innerHTML += `<p class="category-add-singer">${element['artist_name']}</p>`
-                })} else if (type==='category') {
-                jsonResponse['category_list'].forEach((element, index) => {
-                    // const commented_owner_name = document.createElement("div"),
-                    //     comment_owner_img = document.createElement("div"),
-                    //     comment_owner_text = document.createElement("div");
-                    console.log(element['commented_ago'])
-                    categoriesList.innerHTML += `<p class="category-add-singer">${element['category_name']}</p>`
-                })} else {
-                jsonResponse['genre_list'].forEach((element, index) => {
-                    // const commented_owner_name = document.createElement("div"),
-                    //     comment_owner_img = document.createElement("div"),
-                    //     comment_owner_text = document.createElement("div");
-                    console.log(element['commented_ago'])
-                    genresList.innerHTML += `<p class="category-add-singer">${element['genre_name']}</p>`
-                })}
+                input1.value = ''
+
             })
     })
+}
+
+
+function getList(type) {
+
+    fetch(`/${type}-list`, {
+        method: 'GET'
+    })
+        .then(res => res.json())
+        .then(function (jsonResponse) {
+            console.log(jsonResponse['category_list'])
+            console.log(jsonResponse['genre_list'])
+            if (type === 'artist') {
+                jsonResponse['singers'].forEach((element, index) => {
+                    singersList.innerHTML += `<p class="category-add-singer">${element['singer_name']}</p>`
+                })
+            } else if (type === 'category') {
+                jsonResponse['category_list'].forEach((element, index) => {
+                    categoriesList.innerHTML += `<p class="category-add-singer">${element['category_name']}</p>`
+                })
+            } else {
+                jsonResponse['genre_list'].forEach((element, index) => {
+                    genresList.innerHTML += `<p class="category-add-singer">${element['genre_name']}</p>`
+                })
+            }
+        })
 }
 
 
@@ -225,44 +241,17 @@ const addSingerInfo = document.querySelector('.add-singer-info'),
 
 addSingerBtn.addEventListener('click', () => {
     addMusicCategory.style.display = 'block'
-
-    // formPost.innerHTML = '<form class="form_post" action="{{ url_for(\'create_artist\') }}"><input name="singer-name" type="text" placeholder="Enter name of singer">\n' +
-    //     '                        <input type="submit" value="Add"></form>'
-})
-const closeSection = document.querySelector(('.close-section'))
-closeSection.addEventListener('click', ()=>{
-    addMusicCategory.style.display = 'none'
 })
 
 addCategoryBtn.addEventListener('click', () => {
     addMusicCategory.style.display = 'block'
-    type = 'category'
-    // formPost.innerHTML = '<form class="form_post" action="{{ url_for(\'create_category\') }}"><input name="category-name" type="text" placeholder="Enter category name">\n' +
-    //     '                        <a href="#">Add</a></form>'
 })
 
 addGenreBtn.addEventListener('click', () => {
     addMusicCategory.style.display = 'block'
-
-    // formPost.innerHTML = '<form class="form_post" action="{{ url_for(\'create_post\') }}"><input name="genre-name" type="text" placeholder="Enter genre name">\n' +
-    //     '                        <a href="#">Add</a></form>'
 })
 
-
-// addSingerBtn.addEventListener('click', ()=>{
-//     fetch('/add-singer', {
-//         method:'GET',
-//         body: JSON.stringify(
-//             {
-//                 'name': name.value,
-//                 'img': reg_email.value,
-//             }),
-//         headers: {'Content-Type': 'application/json'}
-//     })
-//     .then(res => res.json())
-//     .then(function (jsonResponse) {
-//         addSingerInfo.style.display = 'block'
-//         addCategoryInfo.style.display = 'none'
-//         addGenreInfo.style.display = 'none'
-//     })
-// })
+const closeSection = document.querySelector(('.close-section'))
+closeSection.addEventListener('click', () => {
+    addMusicCategory.style.display = 'none'
+})

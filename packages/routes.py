@@ -91,11 +91,41 @@ def add_singer():
     return render_template('singer_info.html')
 
 
-@app.route('/singer-list')
-def singer_list():
-    object = {}
-    object['singers'] = Singer.query.all()
-    return render_template('singer_info.html')
+@app.route('/artist-list')
+def artist_list():
+    object1 = {}
+    singers_list = []
+    singers = Singer.query.all()
+    for singer1 in singers:
+        singer_dict = {'singer_name': singer1.singer_name, 'singer_img': singer1.singer_img}
+        singers_list.append(singer_dict)
+    object1['singers'] = singers_list
+    print(singers_list)
+    return jsonify(object1)
+
+
+@app.route('/category-list')
+def category_list():
+    object2 = {}
+    categories_list = []
+    categories = Category.query.all()
+    for category in categories:
+        category_dict = {'category_name': category.category_type}
+        categories_list.append(category_dict)
+    object2['category_list'] = categories_list
+    return jsonify(object2)
+
+
+@app.route('/genre-list')
+def genre_list():
+    object3 = {}
+    genres_list = []
+    genres = Genre.query.all()
+    for genre1 in genres:
+        genre_dict = {'genre_name': genre1.genre_type}
+        genres_list.append(genre_dict)
+    object3['genre_list'] = genres_list
+    return jsonify(object3)
 
 
 @app.route('/singer_info')
