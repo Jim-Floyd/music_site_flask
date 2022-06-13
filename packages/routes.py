@@ -3,6 +3,7 @@ from flask import session, request, jsonify
 from app import *
 from app import app
 from app import db
+from packages.models import Genre
 
 
 def get_current_user():
@@ -77,7 +78,6 @@ def register():
 #             return redirect(url_for('login'))
 
 
-
 @app.route('/')
 def index():
     current_user = get_current_user()
@@ -98,7 +98,6 @@ def singer_list():
     return render_template('singer_info.html')
 
 
-
 @app.route('/singer_info')
 def singer():
     return render_template('singer_info.html')
@@ -109,27 +108,66 @@ def cabinet():
     return render_template('cabinet.html')
 
 
-@app.route('/create_category')
+@app.route('/create_category', methods=['POST', 'GET'])
 def create_category():
-    name = request.form.get('name')
+    category_list = []
+    object = {}
+    name = request.get_json()['name']
     ctgr = Category(category_type=name)
     db.session.add(ctgr)
     db.session.commit()
-    return redirect(url_for('home'))
+    categories = Category.query.all()
+    for category in categories:
+        category_dict = {'category_name': category.category_type}
+        category_list.append(category_dict)
+    object['category_list'] = category_list
+    return jsonify(object)
 
 
-@app.route('/create_artist')
+@app.route('/create_genre', methods=['POST', 'GET'])
+def create_genre():
+    genre_list = []
+    object = {}
+    name = request.get_json()['name']
+    genre = Genre(genre_type=name)
+    db.session.add(genre)
+    db.session.commit()
+    genres = Genre.query.all()
+    for genre1 in genres:
+        genre_dict = {'genre_name': genre1.genre_type}
+        genre_list.append(genre_dict)
+    object['genre_list'] = genre_list
+    return jsonify(object)
+
+
+@app.route('/create_artist', methods=['POST', 'GET'])
 def create_artist():
-    name = request.form.get('name')
-    artist = Singer(singer_name=name)
+    artist_list = []
+    object = {}
+
+    name = request.get_json()['name']
+    img = request.get_json()['img']
+    # img = request.files['img-artist']
+    # photo = request.get_json()['img']
+    # filename = secure_filename(img.filename)
+    # img.save(os.path.join("static/img/person", filename))
+    # file_url = "static/img/person"
+    #
+    # result = file_url + '/' + filename
+    artist = Singer(singer_name=name, singer_img=img)
     db.session.add(artist)
     db.session.commit()
-    return redirect(url_for('home'))
+    artists = Singer.query.all()
+    for artist1 in artists:
+        artist_dict = {'artist_name': artist1.singer_name}
+        artist_list.append(artist_dict)
+    object['artist_list'] = artist_list
+    return jsonify(object)
 
 
-@app.route('/create_album/<int:artist_id>')
+@app.route('/create_album/<int:artist_id>', methods=['POST', 'GET'])
 def create_album(artist_id):
-    name = request.form.get('name')
+    name = request.get_json()['name']
     album = Album(album_name=name, album_owner=artist_id)
     db.session.add(album)
     db.session.commit()
@@ -149,6 +187,3 @@ def create_track(album_id, genre_id):
     db.session.add(track)
     db.session.commit()
     return redirect(url_for('home'))
-
-
-

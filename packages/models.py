@@ -24,9 +24,9 @@ class Singer(db.Model):
     __tablename__ = "singer"
     id = db.Column(db.Integer, primary_key=True)
     singer_name = db.Column(db.String())
-    singer_img = db.Column(db.String())
+    singer_img = db.Column(db.String(), nullable=True)
     singer_musics = db.relationship("Musics", backref="owner")
-    singer_album = db.relationship("Album", backref="album_owner")
+    singer_album = db.relationship("Album", backref="singers_album")
 
 
 class Musics(db.Model):
@@ -56,7 +56,7 @@ class Album(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     album_name = db.Column(db.String())
     album_owner = db.Column(db.Integer, db.ForeignKey("singer.id"))
-    album_music = db.relationship("Musics", backref="album")
+    album_music = db.relationship("Musics", backref="album_music")
     # db.Column(db.Integer, db.ForeignKey('music.id'))
 
 
