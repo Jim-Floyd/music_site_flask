@@ -9,18 +9,20 @@
             <div class="leftbox">
                 <div class="ct_box">
                     <div class="category_link">
-                        <p class="category singer-item">Singer</p>
-                        <p class="category category-item">Category</p>
-                        <p class="category genre-item">Genre</p>
+                        <p class="category singer-item1">Singer</p>
+                        <p class="category category-item1">Category</p>
+                        <p class="category genre-item1">Genre</p>
                     </div>
                 </div>
                 <div class="ct_box2">
                     <div class="singer-list">
-                        <div class="singers-list"></div>
+                        <div class="artists-list"></div>
                         <p class="category-add-singer">➕</p>
+                        <div style="display: none" class="albums-list"></div>
+                        <p style="display: none" class="category-add-album">➕</p>
                     </div>
                     <div class="category-list">
-                        <div class="categories-list"></div>
+                        <div class="categorys-list"></div>
                         <p class="category-add-category">➕</p>
                     </div>
                     <div class="genre-list">
@@ -43,21 +45,30 @@
                     </div>
 
                     <div class="add_music_information">
-                        <label for="add_music_img">
-                            <img class="mp3_img" src="https://www.codeproject.com/KB/GDI-plus/ImageProcessing2/img.jpg"
-                                 alt="">
-                        </label>
-                        <input type="file" id="add_music_img" hidden>
-                        <input class="music_info" required type="text" placeholder="Enter title of music">
-                        <input class="music_info" required type="text" placeholder="Enter artist of music">
-                        <input class="music_info" required type="text" placeholder="Enter album of music">
-                        <input class="music_info" required type="text" placeholder="Enter genre of music">
-                        <input class="music_info" required type="text" placeholder="Enter category of music">
-                        <input class="add_input" type="submit" value="Add music">
+
+                            <label for="add_music_img" class="photo-music">
+                                <img class="mp3_img"
+                                     src="https://www.codeproject.com/KB/GDI-plus/ImageProcessing2/img.jpg"
+                                     alt="">
+                                <span class="check-green"></span>
+                            </label>
+                        <form method="post" action="{{ url_for('add_music') }}" enctype="multipart/form-data">
+                            <input type="file" id="add_music_img" name="img" hidden>
+                            <input class="music_info" id="input-music" required type="text"
+                                   placeholder="Enter title of music" name="music_title">
+                            <input class="music_info" id="input-artist" required type="text"
+                                   placeholder="Enter artist of music" name="music_owner">
+                            <input class="music_info" id="input-album" required type="text"
+                                   placeholder="Enter album of music" name="music_album">
+                            <input class="music_info" id="input-genre" required type="text"
+                                   placeholder="Enter genre of music" name="music_genre">
+                            <input class="music_info" id="input-category" required type="text"
+                                   placeholder="Enter category of music" name="music_category">
+                            <input class="add_input" type="submit" value="Add music">
+                        </form>
                     </div>
                 </div>
             </div>
-
         </section>
         <section class="add-item">
             <section class="add_music_category">
@@ -65,6 +76,13 @@
                     <input id="input" type="text">
                     <input type="file" id="img-artist" name="img-artist">
                     <button id="add_btn">Add</button>
+                </div>
+                <div class="close-section">X</div>
+            </section>
+            <section class="add_album_category">
+                <div class="border_box">
+                    <input id="input_album" type="text">
+                    <button id="add_album_btn">Add</button>
                 </div>
                 <div class="close-section">X</div>
             </section>

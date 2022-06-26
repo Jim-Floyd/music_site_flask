@@ -14,5 +14,7 @@ from packages.config import *
 from packages.models import *
 from packages.request import *
 
+path_file = 'static/img/person'
+
 if __name__ == 'main':
     app.run()
