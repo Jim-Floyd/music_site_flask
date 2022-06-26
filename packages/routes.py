@@ -1,4 +1,5 @@
 from flask import session, request, jsonify
+import os
 
 from app import *
 from app import app
@@ -63,22 +64,24 @@ def add_singer():
 
 @app.route('/add-music', methods=['POST', 'GET'])
 def add_music():
-    music_title = request.form.get('name')
-    music_img = request.files['img']
-    filename = secure_filename(music_img.filename)
-    print(filename)
-    music_img.save(os.path.join("./static/img", filename))
-    file_url = "static/img"
-    result = file_url + '/' + filename
-    music_owner = request.form.get('owner')
-    music_album = request.form.get('album')
-    music_category = request.form.get('category')
-    music_genre = request.form.get('genre')
-    music = Musics(music_name=music_title, music_img=result, music_owner=music_owner, music_genre=music_genre,
-                   music_category=music_category, music_album=music_album)
-    db.session.add(music)
-    db.session.commit()
-    return redirect(url_for('cabinet'))
+    if request.method == 'POST':
+        music_title = request.form.get('music_title')
+        print(music_title)
+        music_img = request.form.get('music_img')
+        # filename = secure_filename(music_img.filename)
+        # music_img.save(os.path.join(os.sep, 'static', 'img', filename))
+        # file_url = "/static/img"
+        # result = file_url + '/' + filename
+        music_owner = request.form.get('music_owner')
+        music_album = request.form.get('music_album')
+        music_category = request.form.get('music_category')
+        music_genre = request.form.get('music_genre')
+        music = Musics(music_name=music_title, music_img=music_img, owner=music_owner, genre=music_genre,
+                       category=music_category, album_music=music_album)
+        db.session.add(music)
+        db.session.commit()
+        return redirect(url_for('cabinet'))
+    return render_template('cabinet.html')
 
 
 @app.route('/artist-list')

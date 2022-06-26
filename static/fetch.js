@@ -202,7 +202,7 @@ const input1 = document.getElementById('input'),
     inputCategory = document.getElementById('input-category'),
     inputGenre = document.getElementById('input-genre'),
     inputAlbum = document.getElementById('input-album');
-
+console.log(inputArtist)
 addBtn.addEventListener('click', () => {
     console.log(onceClickedCategoryBtn)
     if (onceClickedCategoryBtn) {
@@ -334,6 +334,7 @@ function getList(type) {
                         if (indexItem !== index) {
                             albumsList.innerHTML = ''
                             indexItem = index
+                            console.log(inputArtist.value)
                             console.log('clicked')
                             removeStyle()
                             item.classList.add('category_active')
